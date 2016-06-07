@@ -9,7 +9,7 @@ grammar Lua;
 
 
 @members {
-   public static String grupo="<<Digite os RAs do grupo aqui>>";
+   public static String grupo="<<558303-558273>>";
 }
 
 //PADROES LEXICOS
@@ -17,14 +17,14 @@ grammar Lua;
 
 NOME_VAR : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*  ;
 
-PAL_RESERVADA : 'and' | 'end' | 'in' | 'repeat' | 'break' | 'false| 'local' | 'return' | 'do' | 'for' 
-                    | 'nil' | 'then' | 'else' | 'function' | 'not' | 'true' | 'elseif' | 'if' | 'or' | 'until' ;
+PAL_RESERVADA : 'and' | 'end' | 'in' | 'repeat' | 'break' | 'false' | 'local' | 'return' | 'do' | 'for' 
+                    | 'nil' | 'then' | 'else' | 'function' | 'not' | 'true' | 'elseif' | 'if' | 'or' | 'until' 
                     | 'while' ; 
 
 SIM_RESERVADO : '+' | '-' | '*' | '/' | '^' | '%' | '..' | ',' 
                 '<' | '<=' | '>' | '>=' | '==' | '~=' | '.' | ';' ;               
 
-COMMENT : '--' ~(\n)* '\n' ; //precisa ver como faz isso
+COMMENT : '--' ~('\n')* '\n' ; //precisa ver como faz isso
 
 NUM_INT	: ('+'|'-')? ('0'..'9')+ ; 
 
@@ -36,7 +36,7 @@ NUM_REAL : ('+'|'-')? ('0'..'9')+ ('.' ('0'..'9')+)? ;
 
 programa : chunk ;
 
-chunk : (stat (';')?)* (laststat (';')?) ;
+chunk : (stat (';')?)* (laststat (';')?)? ;
 
 block : chunk ;
 
@@ -52,7 +52,7 @@ stat :  varlist '=' explist |
          'local' 'function' NOME_VAR funcbody | 
          'local' namelist ('=' explist)? ;
 
-laststat : 'return' (explist)? | break ;
+laststat : 'return' (explist)? | 'break' ;
 
 funcname : NOME_VAR ('.' NOME_VAR)* (':' NOME_VAR)? ;
 
@@ -71,15 +71,15 @@ prefixexp : var | functioncall | '(' exp ')' ;
 
 functioncall :  prefixexp args | prefixexp ':' NOME_VAR args ;
 
-args :  '(' [explist] ')' | tableconstructor | String ;
+args :  '(' (explist)? ')' | tableconstructor | 'String' ;
 
 function : function funcbody ;
 
-funcbody : '(' [parlist] ')' block end ;
+funcbody : '(' (parlist)? ')' block 'end' ;
 
 parlist : namelist (',' '...')? | '...' ;
 
-tableconstructor : '{' [fieldlist] '}' ;
+tableconstructor : '{' (fieldlist)? '}' ;
 
 fieldlist : field (fieldsep field)* (fieldsep)? ;
 
@@ -91,5 +91,5 @@ binop : '+' | '-' | '*' | '/' | '^' | '%' | '..' |
          '<' | '<=' | '>' | '>=' | '==' | '~=' | 
          'and' | 'or' ;
 
-unop : '-' | not | '#' ;
+unop : '-' | 'not' | '#' ;
  
