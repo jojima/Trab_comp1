@@ -1,121 +1,138 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-
 grammar Lua;
 
 
 @members {
-   public static String grupo="<<558303-558273>>";
+   public static String grupo="558303 - 558273";
 }
 
-//PADROES LEXICOS
-//PODE TER A MAIS OU A MENOS (os nomes precisam ser especificos (?)) 
 
-VAR_NAME : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*  ; 
+@header{
+   package t1;
+}
 
-RESERVED_WD : 'and' | 'end' | 'in' | 'repeat' | 'break' | 'false' | 'local' | 'return' | 'do' | 'for' 
-                    | 'nil' | 'then' | 'else' | 'function' | 'not' | 'true' | 'elseif' | 'if' | 'or' | 'until' 
-                    | 'while' ; 
 
-RESERVED_SYMBOL : '+' | '-' | '*' | '/' | '^' | '%' | '..' | ',' 
-                '<' | '<=' | '>' | '>=' | '==' | '~=' | '.' | ';' ;               
+VARNAME : ('a'..'z'|'A'..'Z') ('a'..'z'|'A'..'Z'|'0'..'9')*  ;         
 
-COMMENT : '--' ~('\r' | '\n')* '\r'? '\n' {skip();}; //precisa ver como faz isso
+COMMENT : '--' ~('\r' | '\n')* '\r'? '\n' {skip();}; 
 
-INT_NUM	: ('+'|'-')? ('0'..'9')+ ; 
-
-REAL_NUM : ('+'|'-')? ('0'..'9')+ ('.' ('0'..'9')+)? ;
+REALNUM : ('0'..'9')+ ('.' ('0'..'9')+)? ;
 
 BLANK : ( ' ' |'\r' | '\n' | '\t') {skip();} ;
 
 STRING : '"' (~('\\' | '"'))* '"' | '\''~( '\'' | '\\')* '\'' ;
 
+FIELDSEP : ',' | ';' ;
 
-//REGRAS DE PRODUCAO
-//COMPLETAMENTE NO PADRÃO ANTLR, PORÉM COM AMBIGUIDADES / RECURSIVIDADES INAPROPRIADAS!
+/* REGRAS DE PRODUCAO */
 
-programa : chunk ;
-
-chunk : (stat (';')?)* (laststat (';')?)? ;
+programa : block ;
 
 block : chunk ; 
 
-stat :  varlist '=' explist | 
-         functioncall | 
-         'do' block 'end' | //stat > block > chunk > stat
-         'while' exp 'do' block 'end' | //stat > block > chunk > stat
-         'repeat' block 'until' exp | //stat > block > chunk > stat
-         'if' exp 'then' block ('elseif' exp 'then' block)* ('else' block)? 'end' | //stat > block > chunk > stat
-         'for' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); }  '=' exp ',' exp (',' exp)? 'do' block 'end' | //stat > block > chunk > stat
-         'for' namelist 'in' explist 'do' block 'end' | //stat > block > chunk > stat
-         'function' funcname funcbody | 
-         'local' 'function' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } funcbody | 
-         'local' namelist ('=' explist)? ;
+chunk : (stat (';')?)* (laststat (';')?)? ;
 
-laststat : 'return' (explist)? | 'break' ;
+stat :  varlist '=' explist
+     | functioncall 
+     | 'do' block 'end' 
+     | 'while' exp 'do' block 'end'
+     | 'repeat' block 'until' exp 
+     | 'if' exp 'then' block ('elseif' exp 'then' block)* ('else' block)? 'end'
+     | 'for' VARNAME  '=' exp ',' exp (',' exp)? 'do' block 'end'
+     | 'for' namelist 'in' explist 'do' block 'end' 
+     | 'function' funcname funcbody 
+     | 'local' 'function' VARNAME { TabelaDeSimbolos.adicionarSimbolo($VARNAME.text,Tipo.FUNCAO); } funcbody 
+     | 'local' namelist ('=' explist)? ;
 
-funcname : VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } ('.' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); })* (':' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); })? ;
+laststat : 'return' (explist)? 
+         | 'break' 
+         ;
+
+funcname : VARNAME { TabelaDeSimbolos.adicionarSimbolo($VARNAME.text,Tipo.FUNCAO); } ('.' VARNAME { TabelaDeSimbolos.adicionarSimbolo($VARNAME.text,Tipo.FUNCAO); })* (':' VARNAME { TabelaDeSimbolos.adicionarSimbolo($VARNAME.text,Tipo.FUNCAO); })? 
+         ;
 
 varlist : var (',' var)* ;
 
-var :  VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } | prefixexp '[' exp ']' | prefixexp '.' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } ; //prefixexp > var
+var :  VARNAME { TabelaDeSimbolos.adicionarSimbolo($VARNAME.text,Tipo.VARIAVEL); } 
+    | prefixexp '[' exp ']' | prefixexp '.' VARNAME 
+    ; 
 
-namelist : VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } (',' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); })* ; 
+namelist : VARNAME  { TabelaDeSimbolos.adicionarSimbolo($VARNAME.text,Tipo.VARIAVEL); } (',' VARNAME  { TabelaDeSimbolos.adicionarSimbolo($VARNAME.text,Tipo.VARIAVEL); })* 
+         ; 
 
-explist : (exp ',')* exp ; 
+explist : (exp ',')* exp 
+        ; 
 
-exp :  'nil' | 'false' | 'true' | REAL_NUM | STRING | '...' | function | VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } | 
-         prefixexp | tableconstructor | unop exp //prefixexp > exp
-        |'nil' expA| 'false' expA | 'true' expA | REAL_NUM expA | STRING expA | '...' expA | function expA | VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } expA |
-             prefixexp expA | tableconstructor expA | unop exp expA; //expA > exp //prefixexp > exp
+exp : 'nil' 
+    | 'false' 
+    | 'true' 
+    | REALNUM 
+    | STRING 
+    | '...' 
+    | function   
+    | prefixexp 
+    | tableconstructor 
+    | unop exp 
+    | 'nil' expa 
+    | 'false' expa 
+    | 'true' expa  
+    | REALNUM expa 
+    | STRING expa 
+    | '...' expa 
+    | function expa
+    | prefixexp expa 
+    | tableconstructor expa 
+    | unop exp expa
+    ; 
 
-expA:  binop exp expA | binop exp; //vice versa
+expa:  binop exp 
+    | binop exp expa
+    ; 
 
-prefixexp : 
-'(' exp ')' |
-VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } | 
-'(' exp ')' prefixexpA | 
-VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } prefixexpA | 
-'(' exp ')' prefixexpB |
-VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } prefixexpB | 
-'(' exp ')' prefixexpA prefixexpB |
-VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } prefixexpA prefixexpB ; 
+prefixexp : VARNAME { TabelaDeSimbolos.adicionarSimbolo($VARNAME.text,Tipo.VARIAVEL); }
+          | '(' exp ')' 
+          | VARNAME  prefixexpa 
+          |  '(' exp ')' prefixexpa 
+          ;
 
+prefixexpa: '[' exp ']' 
+          | '.' VARNAME  
+          | args 
+          | ':' VARNAME args  
+          | '[' exp ']' prefixexpa 
+          | '.' VARNAME  prefixexpa 
+          | args prefixexpa 
+          | ':' VARNAME args  prefixexpa 
+          ;
 
+functioncall :  prefixexp args 
+             | prefixexp ':' VARNAME args
+             ;
 
-prefixexpB:
-args | 
-':' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } args |
-args prefixexpA |
-':' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } args prefixexpA | 
-args prefixexpB | 
-':' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } args prefixexpB |
-args prefixexpA prefixexpB |
-':' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } args prefixexpA prefixexpB ;
+args :  '(' (explist)? ')' 
+     | tableconstructor 
+     | STRING 
+     ;
 
-prefixexpA : '[' exp ']' | '.' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } | '[' exp ']' prefixexpA | '.' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } prefixexpA ;
+function : 'function' funcbody 
+         ;
 
-functioncall :  prefixexp args | prefixexp ':' VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } args ;
+funcbody : '(' (parlist)? ')' block 'end' 
+         ;
 
-args :  '(' (explist)? ')' | tableconstructor | STRING ;
+parlist : namelist (',' '...')? 
+        | '...' 
+        ;
 
-function : 'function' funcbody ;
+tableconstructor : '{' (fieldlist)? '}' 
+                 ;
 
-funcbody : '(' (parlist)? ')' block 'end' ;
+fieldlist : field (FIELDSEP field)* (FIELDSEP)? 
+          ;
 
-parlist : namelist (',' '...')? | '...' ;
-
-tableconstructor : '{' (fieldlist)? '}' ;
-
-fieldlist : field (fieldsep field)* (fieldsep)? ;
-
-field : '[' exp ']' '=' exp | VAR_NAME { TabelaDeSimbolos.adicionarSimbolo($VAR_NAME.text,Tipo.VARIAVEL); } '=' exp | exp ;
-
-fieldsep : ',' | ';' ;
+field : '[' exp ']' '=' exp 
+      | VARNAME '=' exp 
+      | exp 
+      ;
 
 binop : '+' | '-' | '*' | '/' | '^' | '%' | '..' | '<' | '<=' | '>' | '>=' | '==' | '~=' | 'and' | 'or' ;
 

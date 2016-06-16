@@ -1,5 +1,7 @@
-package t1;
-// Generated from D:\TrabalhosGit\Trab_comp1\T1\src\t1\Lua.g4 by ANTLR 4.1
+// Generated from D:\Documentos\GitHub\Trab_comp1\T1\src\t1\Lua.g4 by ANTLR 4.1
+
+   package t1;
+
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -12,6 +14,32 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * of the available methods.
  */
 public class LuaBaseListener implements LuaListener {
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterFuncbody(@NotNull LuaParser.FuncbodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitFuncbody(@NotNull LuaParser.FuncbodyContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterStat(@NotNull LuaParser.StatContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitStat(@NotNull LuaParser.StatContext ctx) { }
+
 	/**
 	 * {@inheritDoc}
 	 * <p/>
@@ -30,13 +58,13 @@ public class LuaBaseListener implements LuaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void enterFieldsep(@NotNull LuaParser.FieldsepContext ctx) { }
+	@Override public void enterVar(@NotNull LuaParser.VarContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
-	@Override public void exitFieldsep(@NotNull LuaParser.FieldsepContext ctx) { }
+	@Override public void exitVar(@NotNull LuaParser.VarContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -95,6 +123,19 @@ public class LuaBaseListener implements LuaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterExpa(@NotNull LuaParser.ExpaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitExpa(@NotNull LuaParser.ExpaContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterExplist(@NotNull LuaParser.ExplistContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -102,6 +143,19 @@ public class LuaBaseListener implements LuaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitExplist(@NotNull LuaParser.ExplistContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterFieldlist(@NotNull LuaParser.FieldlistContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitFieldlist(@NotNull LuaParser.FieldlistContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -121,6 +175,19 @@ public class LuaBaseListener implements LuaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterArgs(@NotNull LuaParser.ArgsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitArgs(@NotNull LuaParser.ArgsContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterPrefixexp(@NotNull LuaParser.PrefixexpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -128,6 +195,32 @@ public class LuaBaseListener implements LuaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitPrefixexp(@NotNull LuaParser.PrefixexpContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterPrefixexpa(@NotNull LuaParser.PrefixexpaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitPrefixexpa(@NotNull LuaParser.PrefixexpaContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void enterField(@NotNull LuaParser.FieldContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitField(@NotNull LuaParser.FieldContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
@@ -173,6 +266,19 @@ public class LuaBaseListener implements LuaListener {
 	 * <p/>
 	 * The default implementation does nothing.
 	 */
+	@Override public void enterLaststat(@NotNull LuaParser.LaststatContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
+	@Override public void exitLaststat(@NotNull LuaParser.LaststatContext ctx) { }
+
+	/**
+	 * {@inheritDoc}
+	 * <p/>
+	 * The default implementation does nothing.
+	 */
 	@Override public void enterVarlist(@NotNull LuaParser.VarlistContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -193,136 +299,6 @@ public class LuaBaseListener implements LuaListener {
 	 * The default implementation does nothing.
 	 */
 	@Override public void exitExp(@NotNull LuaParser.ExpContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterFuncbody(@NotNull LuaParser.FuncbodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitFuncbody(@NotNull LuaParser.FuncbodyContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterStat(@NotNull LuaParser.StatContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitStat(@NotNull LuaParser.StatContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterVar(@NotNull LuaParser.VarContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitVar(@NotNull LuaParser.VarContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterExpA(@NotNull LuaParser.ExpAContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitExpA(@NotNull LuaParser.ExpAContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterFieldlist(@NotNull LuaParser.FieldlistContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitFieldlist(@NotNull LuaParser.FieldlistContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterArgs(@NotNull LuaParser.ArgsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitArgs(@NotNull LuaParser.ArgsContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterPrefixexpA(@NotNull LuaParser.PrefixexpAContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitPrefixexpA(@NotNull LuaParser.PrefixexpAContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterPrefixexpB(@NotNull LuaParser.PrefixexpBContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitPrefixexpB(@NotNull LuaParser.PrefixexpBContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterField(@NotNull LuaParser.FieldContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitField(@NotNull LuaParser.FieldContext ctx) { }
-
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void enterLaststat(@NotNull LuaParser.LaststatContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 * <p/>
-	 * The default implementation does nothing.
-	 */
-	@Override public void exitLaststat(@NotNull LuaParser.LaststatContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
